@@ -153,7 +153,7 @@ class VeSyncDimmableLightHA(VeSyncBaseLight, LightEntity):
     @cached_property
     def supported_color_modes(self):
         """Flag supported color_modes (in an array format)."""
-        return [COLOR_MODE_BRIGHTNESS]
+        return {COLOR_MODE_BRIGHTNESS}
 
 
 class VeSyncTunableWhiteLightHA(VeSyncBaseLight, LightEntity):
@@ -208,7 +208,7 @@ class VeSyncTunableWhiteLightHA(VeSyncBaseLight, LightEntity):
     @cached_property
     def supported_color_modes(self):
         """Flag supported color_modes (in an array format)."""
-        return [COLOR_MODE_COLOR_TEMP]
+        return {COLOR_MODE_COLOR_TEMP}
 
 
 class VeSyncNightLightHA(VeSyncDimmableLightHA):
