@@ -119,7 +119,10 @@ class VeSyncHumidifierHA(VeSyncDevice, HumidifierEntity):
     @cached_property
     def available_modes(self) -> list[str]:
         """Return the available mist modes."""
-        modes = []
+        if self.smarthumidifier.mist_modes is None:
+            return []
+
+        modes: list[str] = []
         for vs_mode in self.smarthumidifier.mist_modes:
             ha_mode = _get_ha_mode(vs_mode)
 
