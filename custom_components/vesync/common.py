@@ -3,6 +3,7 @@ from functools import cached_property
 import logging
 
 from homeassistant.components.diagnostics import async_redact_data
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import Entity, ToggleEntity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from pyvesync.vesyncfan import model_features as fan_model_features
@@ -159,7 +160,7 @@ class VeSyncBaseEntity(CoordinatorEntity, Entity):
         return self.device.connection_status == "online"
 
     @cached_property
-    def device_info(self):
+    def device_info(self) -> DeviceInfo | None:
         """Return device information."""
         return {
             "identifiers": {(DOMAIN, self.base_unique_id)},
