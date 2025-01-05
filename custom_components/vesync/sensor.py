@@ -1,5 +1,6 @@
 """Support for power & energy sensors for VeSync outlets."""
 
+from functools import cached_property
 import logging
 
 from homeassistant.components.sensor import (
@@ -108,33 +109,33 @@ class VeSyncairfryerSensor(VeSyncBaseEntity, SensorEntity):
         self.airfryer = airfryer
         self.stype = stype
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for power sensor on device."""
         return f"{super().unique_id}-" + self.stype[0]
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return self.stype[1]
 
-    @property
+    @cached_property
     def device_class(self):
         """Return the class."""
         return self.stype[4]
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the value."""
         return getattr(self.airfryer, self.stype[5], None)
 
-    @property
+    @cached_property
     def native_unit_of_measurement(self):
         """Return the unit of measurement."""
         # return self.airfryer.temp_unit
         return self.stype[2]
 
-    @property
+    @cached_property
     def icon(self):
         """Return the icon to use in the frontend, if any."""
         return self.stype[3]
@@ -148,7 +149,7 @@ class VeSyncOutletSensorEntity(VeSyncBaseEntity, SensorEntity):
         super().__init__(plug, coordinator)
         self.smartplug = plug
 
-    @property
+    @cached_property
     def entity_category(self):
         """Return the diagnostic entity category."""
         return EntityCategory.DIAGNOSTIC
@@ -161,32 +162,32 @@ class VeSyncPowerSensor(VeSyncOutletSensorEntity):
         """Initialize the VeSync outlet device."""
         super().__init__(plug, coordinator)
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for power sensor on device."""
         return f"{super().unique_id}-power"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} current power"
 
-    @property
+    @cached_property
     def device_class(self):
         """Return the power device class."""
         return SensorDeviceClass.POWER
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the current power usage in W."""
         return self.smartplug.power
 
-    @property
+    @cached_property
     def native_unit_of_measurement(self):
         """Return the Watt unit of measurement."""
         return UnitOfPower.WATT
 
-    @property
+    @cached_property
     def state_class(self):
         """Return the measurement state class."""
         return SensorStateClass.MEASUREMENT
@@ -205,32 +206,32 @@ class VeSyncEnergySensor(VeSyncOutletSensorEntity):
         super().__init__(plug, coordinator)
         self.smartplug = plug
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for power sensor on device."""
         return f"{super().unique_id}-energy"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} energy use today"
 
-    @property
+    @cached_property
     def device_class(self):
         """Return the energy device class."""
         return SensorDeviceClass.ENERGY
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the today total energy usage in kWh."""
         return self.smartplug.energy_today
 
-    @property
+    @cached_property
     def native_unit_of_measurement(self):
         """Return the kWh unit of measurement."""
         return UnitOfEnergy.KILO_WATT_HOUR
 
-    @property
+    @cached_property
     def state_class(self):
         """Return the total_increasing state class."""
         return SensorStateClass.TOTAL_INCREASING
@@ -249,8 +250,8 @@ class VeSyncHumidifierSensorEntity(VeSyncBaseEntity, SensorEntity):
         super().__init__(humidifier, coordinator)
         self.smarthumidifier = humidifier
 
-    @property
-    def entity_category(self):
+    @cached_property
+    def entity_category(self) -> EntityCategory | None:
         """Return the diagnostic entity category."""
         return None
 
@@ -267,22 +268,22 @@ class VeSyncAirQualitySensor(VeSyncHumidifierSensorEntity):
         if self.native_value is not None:
             self._numeric_quality = isinstance(self.native_value, (int, float))
 
-    @property
+    @cached_property
     def device_class(self):
         """Return the air quality device class."""
         return SensorDeviceClass.AQI if self._numeric_quality else None
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for air quality sensor on device."""
         return f"{super().unique_id}-air-quality"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} air quality"
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the air quality index."""
         if has_feature(self.smarthumidifier, "details", "air_quality"):
@@ -310,22 +311,22 @@ class VeSyncAirQualityPercSensor(VeSyncHumidifierSensorEntity):
         if self.native_value is not None:
             self._numeric_quality = isinstance(self.native_value, (int, float))
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for air quality sensor on device."""
         return f"{super().unique_id}-air-quality-perc"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} air quality percentage"
 
-    @property
+    @cached_property
     def native_unit_of_measurement(self):
         """Return the % unit of measurement."""
         return PERCENTAGE
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the air quality percentage."""
         if has_feature(self.smarthumidifier, "details", "aq_percent"):
@@ -352,17 +353,17 @@ class VeSyncAirQualityValueSensor(VeSyncHumidifierSensorEntity):
         """Initialize the VeSync device."""
         super().__init__(device, coordinator)
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for air quality sensor on device."""
         return f"{super().unique_id}-air-quality-value"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} air quality value"
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the air quality index."""
         if has_feature(self.smarthumidifier, "details", "air_quality_value"):
@@ -389,17 +390,17 @@ class VeSyncPM1Sensor(VeSyncHumidifierSensorEntity):
         """Initialize the VeSync device."""
         super().__init__(device, coordinator)
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for PM1 sensor on device."""
         return f"{super().unique_id}-pm1"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} PM1"
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the PM1."""
         if has_feature(self.smarthumidifier, "details", "pm1"):
@@ -426,17 +427,17 @@ class VeSyncPM10Sensor(VeSyncHumidifierSensorEntity):
         """Initialize the VeSync device."""
         super().__init__(device, coordinator)
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for PM10 sensor on device."""
         return f"{super().unique_id}-pm10"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} PM10"
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the PM10."""
         if has_feature(self.smarthumidifier, "details", "pm10"):
@@ -459,27 +460,27 @@ class VeSyncFilterLifeSensor(VeSyncHumidifierSensorEntity):
         """Initialize the VeSync device."""
         super().__init__(plug, coordinator)
 
-    @property
+    @cached_property
     def entity_category(self):
         """Return the diagnostic entity category."""
         return EntityCategory.DIAGNOSTIC
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for filter life sensor on device."""
         return f"{super().unique_id}-filter-life"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} filter life"
 
-    @property
+    @cached_property
     def device_class(self):
         """Return the filter life device class."""
         return None
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the filter life index."""
         return (
@@ -488,12 +489,12 @@ class VeSyncFilterLifeSensor(VeSyncHumidifierSensorEntity):
             else self.smarthumidifier.details["filter_life"]
         )
 
-    @property
+    @cached_property
     def native_unit_of_measurement(self):
         """Return the % unit of measurement."""
         return PERCENTAGE
 
-    @property
+    @cached_property
     def state_class(self):
         """Return the measurement state class."""
         return SensorStateClass.MEASUREMENT
@@ -507,7 +508,7 @@ class VeSyncFilterLifeSensor(VeSyncHumidifierSensorEntity):
             else {}
         )
 
-    @property
+    @cached_property
     def icon(self):
         """Return the icon to use in the frontend, if any."""
         return "mdi:air-filter"
@@ -520,27 +521,27 @@ class VeSyncFanRotateAngleSensor(VeSyncHumidifierSensorEntity):
         """Initialize the VeSync device."""
         super().__init__(plug, coordinator)
 
-    @property
+    @cached_property
     def entity_category(self):
         """Return the diagnostic entity category."""
         return EntityCategory.DIAGNOSTIC
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for filter life sensor on device."""
         return f"{super().unique_id}-fan-rotate-angle"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} fan rotate angle"
 
-    @property
+    @cached_property
     def device_class(self):
         """Return the fan rotate angle device class."""
         return None
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the fan rotate angle index."""
         return (
@@ -549,17 +550,17 @@ class VeSyncFanRotateAngleSensor(VeSyncHumidifierSensorEntity):
             else self.smarthumidifier.details["fan_rotate_angle"]
         )
 
-    @property
+    @cached_property
     def native_unit_of_measurement(self):
         """Return the % unit of measurement."""
         return DEGREE
 
-    @property
+    @cached_property
     def state_class(self):
         """Return the measurement state class."""
         return SensorStateClass.MEASUREMENT
 
-    @property
+    @cached_property
     def icon(self):
         """Return the icon to use in the frontend, if any."""
         return "mdi:rotate-3d-variant"
@@ -572,32 +573,32 @@ class VeSyncHumiditySensor(VeSyncHumidifierSensorEntity):
         """Initialize the VeSync outlet device."""
         super().__init__(humidity, coordinator)
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for humidity sensor on device."""
         return f"{super().unique_id}-humidity"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} current humidity"
 
-    @property
+    @cached_property
     def device_class(self):
         """Return the humidity device class."""
         return SensorDeviceClass.HUMIDITY
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the current humidity in percent."""
         return self.smarthumidifier.details["humidity"]
 
-    @property
+    @cached_property
     def native_unit_of_measurement(self):
         """Return the % unit of measurement."""
         return PERCENTAGE
 
-    @property
+    @cached_property
     def state_class(self):
         """Return the measurement state class."""
         return SensorStateClass.MEASUREMENT

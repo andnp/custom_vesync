@@ -1,5 +1,6 @@
 """Support for number settings on VeSync devices."""
 
+from functools import cached_property
 from homeassistant.components.number import NumberEntity
 from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.config_entries import ConfigEntry
@@ -65,7 +66,7 @@ class VeSyncNumberEntity(VeSyncBaseEntity, NumberEntity):
         """Initialize the VeSync fan device."""
         super().__init__(device, coordinator)
 
-    @property
+    @cached_property
     def entity_category(self):
         """Return the diagnostic entity category."""
         return EntityCategory.CONFIG
@@ -81,22 +82,22 @@ class VeSyncFanSpeedLevelHA(VeSyncNumberEntity):
         self._attr_native_max_value = device._config_dict["levels"][-1]
         self._attr_native_step = 1
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return the ID of this device."""
         return f"{super().unique_id}-fan-speed-level"
 
-    @property
+    @cached_property
     def name(self):
         """Return the name of the device."""
         return f"{super().name} fan speed level"
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the fan speed level."""
         return self.device.speed
 
-    @property
+    @cached_property
     def extra_state_attributes(self):
         """Return the state attributes of the humidifier."""
         return {"fan speed levels": self.device._config_dict["levels"]}
@@ -116,22 +117,22 @@ class VeSyncHumidifierMistLevelHA(VeSyncNumberEntity):
         self._attr_native_max_value = device._config_dict["mist_levels"][-1]
         self._attr_native_step = 1
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return the ID of this device."""
         return f"{super().unique_id}-mist-level"
 
-    @property
+    @cached_property
     def name(self):
         """Return the name of the device."""
         return f"{super().name} mist level"
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the mist level."""
         return self.device.details["mist_virtual_level"]
 
-    @property
+    @cached_property
     def extra_state_attributes(self):
         """Return the state attributes of the humidifier."""
         return {"mist levels": self.device._config_dict["mist_levels"]}
@@ -151,22 +152,22 @@ class VeSyncHumidifierWarmthLevelHA(VeSyncNumberEntity):
         self._attr_native_max_value = device._config_dict["warm_mist_levels"][-1]
         self._attr_native_step = 1
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return the ID of this device."""
         return f"{super().unique_id}-warm-mist"
 
-    @property
+    @cached_property
     def name(self):
         """Return the name of the device."""
         return f"{super().name} warm mist"
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the warmth level."""
         return self.device.details["warm_mist_level"]
 
-    @property
+    @cached_property
     def extra_state_attributes(self):
         """Return the state attributes of the humidifier."""
         return {"warm mist levels": self.device._config_dict["warm_mist_levels"]}
@@ -186,27 +187,27 @@ class VeSyncHumidifierTargetLevelHA(VeSyncNumberEntity):
         self._attr_native_max_value = MAX_HUMIDITY
         self._attr_native_step = 1
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return the ID of this device."""
         return f"{super().unique_id}-target-level"
 
-    @property
+    @cached_property
     def name(self):
         """Return the name of the device."""
         return f"{super().name} target level"
 
-    @property
+    @cached_property
     def native_value(self):
         """Return the current target humidity level."""
         return self.device.config["auto_target_humidity"]
 
-    @property
+    @cached_property
     def native_unit_of_measurement(self):
         """Return the native unit of measurement for the target humidity level."""
         return PERCENTAGE
 
-    @property
+    @cached_property
     def device_class(self):
         """Return the device class of the target humidity level.
 

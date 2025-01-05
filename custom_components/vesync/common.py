@@ -1,4 +1,5 @@
 """Common utilities for VeSync Component."""
+from functools import cached_property
 import logging
 
 from homeassistant.components.diagnostics import async_redact_data
@@ -135,29 +136,29 @@ class VeSyncBaseEntity(CoordinatorEntity, Entity):
             return f"{self.device.cid}{str(self.device.sub_device_no)}"
         return self.device.cid
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return the ID of this device."""
         # The unique_id property may be overridden in subclasses, such as in sensors. Maintaining base_unique_id allows
         # us to group related entities under a single device.
         return self.base_unique_id
 
-    @property
+    @cached_property
     def base_name(self):
         """Return the name of the device."""
         return self.device.device_name
 
-    @property
+    @cached_property
     def name(self):
         """Return the name of the entity (may be overridden)."""
         return self.base_name
 
-    @property
+    @cached_property
     def available(self) -> bool:
         """Return True if device is available."""
         return self.device.connection_status == "online"
 
-    @property
+    @cached_property
     def device_info(self):
         """Return device information."""
         return {
@@ -182,7 +183,7 @@ class VeSyncDevice(VeSyncBaseEntity, ToggleEntity):
         """Initialize the VeSync device."""
         super().__init__(device, coordinator)
 
-    @property
+    @cached_property
     def is_on(self):
         """Return True if device is on."""
         return self.device.device_status == "on"

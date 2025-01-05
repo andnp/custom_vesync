@@ -1,5 +1,6 @@
 """Support for VeSync fans."""
 
+from functools import cached_property
 import math
 
 from homeassistant.components.fan import FanEntity, FanEntityFeature
@@ -84,7 +85,7 @@ class VeSyncFanHA(VeSyncDevice, FanEntity):
         if self.smartfan.device_type == "LV-PUR131S":
             self._speed_range = (1, 3)
 
-    @property
+    @cached_property
     def supported_features(self):
         """Flag supported features."""
         return (
@@ -93,7 +94,7 @@ class VeSyncFanHA(VeSyncDevice, FanEntity):
             else FanEntityFeature.TURN_ON | FanEntityFeature.TURN_OFF | FanEntityFeature.SET_SPEED
         )
 
-    @property
+    @cached_property
     def percentage(self):
         """Return the current speed."""
         if (
@@ -103,22 +104,22 @@ class VeSyncFanHA(VeSyncDevice, FanEntity):
             return ranged_value_to_percentage(self._speed_range, current_level)
         return None
 
-    @property
+    @cached_property
     def speed_count(self) -> int:
         """Return the number of speeds the fan supports."""
         return int_states_in_range(self._speed_range)
 
-    @property
+    @cached_property
     def preset_mode(self):
         """Get the current preset mode."""
         return self.smartfan.mode
 
-    @property
+    @cached_property
     def unique_info(self):
         """Return the ID of this fan."""
         return self.smartfan.uuid
 
-    @property
+    @cached_property
     def extra_state_attributes(self):
         """Return the state attributes of the fan."""
         attr = {}

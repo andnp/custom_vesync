@@ -1,6 +1,7 @@
 """Support for VeSync humidifiers."""
 from __future__ import annotations
 
+from functools import cached_property
 import logging
 from collections.abc import Mapping
 from typing import Any
@@ -114,6 +115,8 @@ class VeSyncHumidifierHA(VeSyncDevice, HumidifierEntity):
             )
 
         self.smarthumidifier = humidifier
+
+    @cached_property
     def available_modes(self) -> list[str]:
         """Return the available mist modes."""
         modes = []
@@ -127,38 +130,38 @@ class VeSyncHumidifierHA(VeSyncDevice, HumidifierEntity):
 
         return modes
 
-    @property
+    @cached_property
     def supported_features(self):
         """Flag supported features."""
         return HumidifierEntityFeature.MODES
 
-    @property
+    @cached_property
     def target_humidity(self) -> int:
         """Return the humidity we try to reach."""
         if type(self.smarthumidifier) is VeSyncSuperior6000S:
             return self.smarthumidifier.details["target_humidity"]
         return self.smarthumidifier.config["auto_target_humidity"]
 
-    @property
+    @cached_property
     def mode(self) -> str | None:
         """Get the current preset mode."""
         if type(self.smarthumidifier) is VeSyncSuperior6000S:
             return _get_ha_mode(self.smarthumidifier.mode)
         return _get_ha_mode(self.smarthumidifier.details["mode"])
 
-    @property
+    @cached_property
     def is_on(self) -> bool:
         """Return True if humidifier is on."""
         if type(self.smarthumidifier) is VeSyncSuperior6000S:
             return self.smarthumidifier.device_status == "on"
         return self.smarthumidifier.enabled  # device_status is always on
 
-    @property
+    @cached_property
     def unique_info(self) -> str:
         """Return the ID of this humidifier."""
         return self.smarthumidifier.uuid
 
-    @property
+    @cached_property
     def extra_state_attributes(self) -> Mapping[str, Any]:
         """Return the state attributes of the humidifier."""
 

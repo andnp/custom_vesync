@@ -1,5 +1,6 @@
 """Support for VeSync button."""
 
+from functools import cached_property
 import logging
 
 from homeassistant.components.button import ButtonEntity
@@ -76,17 +77,17 @@ class VeSyncairfryerButton(VeSyncBaseEntity, ButtonEntity):
         self.airfryer = airfryer
         self.stype = stype
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for water tank lifted sensor on device."""
         return f"{super().unique_id}-" + self.stype[0]
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return self.stype[1]
 
-    @property
+    @cached_property
     def icon(self):
         """Return the icon to use in the frontend, if any."""
         return self.stype[2]

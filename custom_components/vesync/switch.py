@@ -1,4 +1,5 @@
 """Support for VeSync switches."""
+from functools import cached_property
 import logging
 
 from homeassistant.components.switch import SwitchEntity
@@ -81,7 +82,7 @@ class VeSyncSwitchHA(VeSyncBaseSwitch, SwitchEntity):
         super().__init__(plug, coordinator)
         self.smartplug = plug
 
-    @property
+    @cached_property
     def extra_state_attributes(self):
         """Return the state attributes of the device."""
         return (
@@ -118,7 +119,7 @@ class VeSyncSwitchEntity(VeSyncBaseEntity, SwitchEntity):
         super().__init__(humidifier, coordinator)
         self.smarthumidifier = humidifier
 
-    @property
+    @cached_property
     def entity_category(self):
         """Return the configuration entity category."""
         return EntityCategory.CONFIG
@@ -131,17 +132,17 @@ class VeSyncFanChildLockHA(VeSyncSwitchEntity):
         """Initialize the VeSync outlet device."""
         super().__init__(lock, coordinator)
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return the ID of this display."""
         return f"{super().unique_id}-child-lock"
 
-    @property
+    @cached_property
     def name(self):
         """Return the name of the entity."""
         return f"{super().name} child lock"
 
-    @property
+    @cached_property
     def is_on(self):
         """Return True if it is locked."""
         return self.device.details["child_lock"]
@@ -162,17 +163,17 @@ class VeSyncHumidifierDisplayHA(VeSyncSwitchEntity):
         """Initialize the VeSync outlet device."""
         super().__init__(lock, coordinator)
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return the ID of this display."""
         return f"{super().unique_id}-display"
 
-    @property
+    @cached_property
     def name(self):
         """Return the name of the entity."""
         return f"{super().name} display"
 
-    @property
+    @cached_property
     def is_on(self):
         """Return True if it is locked."""
         return self.device.details["display"]
@@ -193,17 +194,17 @@ class VeSyncHumidifierAutomaticStopHA(VeSyncSwitchEntity):
         """Initialize the VeSync outlet device."""
         super().__init__(automatic, coordinator)
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return the ID of this device."""
         return f"{super().unique_id}-automatic-stop"
 
-    @property
+    @cached_property
     def name(self):
         """Return the name of the device."""
         return f"{super().name} automatic stop"
 
-    @property
+    @cached_property
     def is_on(self):
         """Return True if automatic stop is on."""
         if type(self.device) is VeSyncSuperior6000S:
@@ -226,17 +227,17 @@ class VeSyncHumidifierAutoOnHA(VeSyncSwitchEntity):
         """Initialize the VeSync outlet device."""
         super().__init__(autooff, coordinator)
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return the ID of this device."""
         return f"{super().unique_id}-auto-mode"
 
-    @property
+    @cached_property
     def name(self):
         """Return the name of the device."""
         return f"{super().name} auto mode"
 
-    @property
+    @cached_property
     def is_on(self):
         """Return True if in auto mode."""
         if type(self.device) is VeSyncSuperior6000S:

@@ -1,5 +1,6 @@
 """Support for power & energy sensors for VeSync outlets."""
 
+from functools import cached_property
 import logging
 
 from homeassistant.components.binary_sensor import BinarySensorEntity
@@ -73,28 +74,28 @@ class VeSyncairfryerSensor(VeSyncBaseEntity, BinarySensorEntity):
         self.airfryer = airfryer
         self.stype = stype
 
-    @property
+    @cached_property
     def entity_category(self):
         """Return the diagnostic entity category."""
         return EntityCategory.DIAGNOSTIC
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for water tank lifted sensor on device."""
         return f"{super().unique_id}-" + self.stype[0]
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return self.stype[1]
 
-    @property
+    @cached_property
     def is_on(self) -> bool:
         """Return a value indicating whether the Humidifier's water tank is lifted."""
         return getattr(self.airfryer, self.stype[0], None)
         # return self.smarthumidifier.details["water_tank_lifted"]
 
-    @property
+    @cached_property
     def icon(self):
         """Return the icon to use in the frontend, if any."""
         return self.stype[2]
@@ -108,7 +109,7 @@ class VeSyncBinarySensorEntity(VeSyncBaseEntity, BinarySensorEntity):
         super().__init__(humidifier, coordinator)
         self.smarthumidifier = humidifier
 
-    @property
+    @cached_property
     def entity_category(self):
         """Return the diagnostic entity category."""
         return EntityCategory.DIAGNOSTIC
@@ -117,17 +118,17 @@ class VeSyncBinarySensorEntity(VeSyncBaseEntity, BinarySensorEntity):
 class VeSyncOutOfWaterSensor(VeSyncBinarySensorEntity):
     """Out of Water Sensor."""
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for out of water sensor on device."""
         return f"{super().unique_id}-out_of_water"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} out of water"
 
-    @property
+    @cached_property
     def is_on(self) -> bool:
         """Return a value indicating whether the Humidifier is out of water."""
         return self.smarthumidifier.details["water_lacks"]
@@ -136,17 +137,17 @@ class VeSyncOutOfWaterSensor(VeSyncBinarySensorEntity):
 class VeSyncWaterTankLiftedSensor(VeSyncBinarySensorEntity):
     """Tank Lifted Sensor."""
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for water tank lifted sensor on device."""
         return f"{super().unique_id}-water_tank_lifted"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} water tank lifted"
 
-    @property
+    @cached_property
     def is_on(self) -> bool:
         """Return a value indicating whether the Humidifier's water tank is lifted."""
         return self.smarthumidifier.details["water_tank_lifted"]
@@ -155,17 +156,17 @@ class VeSyncWaterTankLiftedSensor(VeSyncBinarySensorEntity):
 class VeSyncFilterOpenStateSensor(VeSyncBinarySensorEntity):
     """Filter Open Sensor."""
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return unique ID for filter open state sensor on device."""
         return f"{super().unique_id}-filter-open-state"
 
-    @property
+    @cached_property
     def name(self):
         """Return sensor name."""
         return f"{super().name} filter open state"
 
-    @property
+    @cached_property
     def is_on(self) -> bool:
         """Return a value indicating whether the Humidifier's filter is open."""
         return self.smarthumidifier.details["filter_open_state"]

@@ -1,4 +1,5 @@
 """Support for VeSync bulbs and wall dimmers."""
+from functools import cached_property
 import logging
 
 from homeassistant.components.light import (
@@ -92,7 +93,7 @@ class VeSyncBaseLight(VeSyncDevice, LightEntity):
         """Initialize the VeSync light device."""
         super().__init__(light, coordinator)
 
-    @property
+    @cached_property
     def brightness(self):
         """Get light brightness."""
         # get value from pyvesync library api,
@@ -144,12 +145,12 @@ class VeSyncDimmableLightHA(VeSyncBaseLight, LightEntity):
         """Initialize the VeSync dimmable light device."""
         super().__init__(device, coordinator)
 
-    @property
+    @cached_property
     def color_mode(self):
         """Set color mode for this entity."""
         return COLOR_MODE_BRIGHTNESS
 
-    @property
+    @cached_property
     def supported_color_modes(self):
         """Flag supported color_modes (in an array format)."""
         return [COLOR_MODE_BRIGHTNESS]
@@ -162,7 +163,7 @@ class VeSyncTunableWhiteLightHA(VeSyncBaseLight, LightEntity):
         """Initialize the VeSync Tunable White Light device."""
         super().__init__(device, coordinator)
 
-    @property
+    @cached_property
     def color_temp(self):
         """Get device white temperature."""
         # get value from pyvesync library api,
@@ -189,22 +190,22 @@ class VeSyncTunableWhiteLightHA(VeSyncBaseLight, LightEntity):
         # ensure value between minimum and maximum Mireds
         return max(self.min_mireds, min(color_temp_value, self.max_mireds))
 
-    @property
+    @cached_property
     def min_mireds(self):
         """Set device coldest white temperature."""
         return 154  # 154 Mireds ( 1,000,000 divided by 6500 Kelvin = 154 Mireds)
 
-    @property
+    @cached_property
     def max_mireds(self):
         """Set device warmest white temperature."""
         return 370  # 370 Mireds  ( 1,000,000 divided by 2700 Kelvin = 370 Mireds)
 
-    @property
+    @cached_property
     def color_mode(self):
         """Set color mode for this entity."""
         return COLOR_MODE_COLOR_TEMP
 
-    @property
+    @cached_property
     def supported_color_modes(self):
         """Flag supported color_modes (in an array format)."""
         return [COLOR_MODE_COLOR_TEMP]
@@ -221,17 +222,17 @@ class VeSyncNightLightHA(VeSyncDimmableLightHA):
             self.device, "details", "night_light_brightness"
         )
 
-    @property
+    @cached_property
     def unique_id(self):
         """Return the ID of this device."""
         return f"{super().unique_id}-night-light"
 
-    @property
+    @cached_property
     def name(self):
         """Return the name of the device."""
         return f"{super().name} night light"
 
-    @property
+    @cached_property
     def brightness(self):
         """Get night light brightness."""
         return (
@@ -240,7 +241,7 @@ class VeSyncNightLightHA(VeSyncDimmableLightHA):
             else {"on": 255, "dim": 125, "off": 0}[self.device.details["night_light"]]
         )
 
-    @property
+    @cached_property
     def is_on(self):
         """Return True if night light is on."""
         if has_feature(self.device, "details", "night_light"):
@@ -248,7 +249,7 @@ class VeSyncNightLightHA(VeSyncDimmableLightHA):
         if self.has_brightness:
             return self.device.details["night_light_brightness"] > 0
 
-    @property
+    @cached_property
     def entity_category(self):
         """Return the configuration entity category."""
         return EntityCategory.CONFIG
