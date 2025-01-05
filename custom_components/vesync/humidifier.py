@@ -95,24 +95,25 @@ def _get_vs_mode(ha_mode: str) -> str | None:
     return vs_mode
 
 
+VeSyncHumidifier = VeSyncHumid200300S | VeSyncSuperior6000S
+
 class VeSyncHumidifierHA(VeSyncDevice, HumidifierEntity):
     """Representation of a VeSync humidifier."""
 
     _attr_max_humidity = MAX_HUMIDITY
     _attr_min_humidity = MIN_HUMIDITY
 
-    def __init__(self, humidifier, coordinator) -> None:
+    def __init__(self, humidifier: VeSyncHumidifier, coordinator) -> None:
         """Initialize the VeSync humidifier device."""
         super().__init__(humidifier, coordinator)
-        if type(humidifier) in [VeSyncHumid200300S, VeSyncSuperior6000S]:
-            self.smarthumidifier = humidifier
-        else:
+
+        if not isinstance(humidifier, VeSyncHumidifier):
             _LOGGER.error("Found incompatible humidifier model")
             raise Exception(
                 "This humidifier is not compatible with the current release of CustomVeSync"
             )
 
-    @property
+        self.smarthumidifier = humidifier
     def available_modes(self) -> list[str]:
         """Return the available mist modes."""
         modes = []
