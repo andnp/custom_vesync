@@ -3,10 +3,12 @@
 from functools import cached_property
 import logging
 
-from homeassistant.components.sensor import (
+from homeassistant.components.sensor.const import (
     SensorDeviceClass,
-    SensorEntity,
     SensorStateClass,
+)
+from homeassistant.components.sensor import (
+    SensorEntity,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
@@ -16,9 +18,9 @@ from homeassistant.const import (
     UnitOfEnergy,
     UnitOfPower,
 )
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
-from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .common import VeSyncBaseEntity, has_feature

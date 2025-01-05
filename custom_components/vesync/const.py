@@ -1,6 +1,6 @@
 """Constants for VeSync Component."""
 
-from homeassistant.components.sensor import SensorDeviceClass
+from homeassistant.components.sensor.const import SensorDeviceClass
 from homeassistant.const import UnitOfTemperature, UnitOfTime
 
 DOMAIN = "vesync"
