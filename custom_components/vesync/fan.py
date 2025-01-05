@@ -149,7 +149,7 @@ class VeSyncFanHA(VeSyncDevice, FanEntity):
 
     def set_preset_mode(self, preset_mode):
         """Set the preset mode of device."""
-        if preset_mode not in self.preset_modes:
+        if self.preset_modes is None or preset_mode not in self.preset_modes:
             raise ValueError(
                 "{preset_mode} is not one of the valid preset modes: {self.preset_modes}"
             )
