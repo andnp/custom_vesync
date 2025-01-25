@@ -82,7 +82,7 @@ class VeSyncSwitchHA(VeSyncBaseSwitch, SwitchEntity):
         super().__init__(plug, coordinator)
         self.smartplug = plug
 
-    @cached_property
+    @property
     def extra_state_attributes(self):
         """Return the state attributes of the device."""
         return (
@@ -142,7 +142,7 @@ class VeSyncFanChildLockHA(VeSyncSwitchEntity):
         """Return the name of the entity."""
         return f"{super().name} child lock"
 
-    @cached_property
+    @property
     def is_on(self):
         """Return True if it is locked."""
         return self.device.details["child_lock"]
@@ -173,7 +173,7 @@ class VeSyncHumidifierDisplayHA(VeSyncSwitchEntity):
         """Return the name of the entity."""
         return f"{super().name} display"
 
-    @cached_property
+    @property
     def is_on(self):
         """Return True if it is locked."""
         return self.device.details["display"]
@@ -204,7 +204,7 @@ class VeSyncHumidifierAutomaticStopHA(VeSyncSwitchEntity):
         """Return the name of the device."""
         return f"{super().name} automatic stop"
 
-    @cached_property
+    @property
     def is_on(self):
         """Return True if automatic stop is on."""
         if type(self.device) is VeSyncSuperior6000S:
@@ -237,7 +237,7 @@ class VeSyncHumidifierAutoOnHA(VeSyncSwitchEntity):
         """Return the name of the device."""
         return f"{super().name} auto mode"
 
-    @cached_property
+    @property
     def is_on(self):
         """Return True if in auto mode."""
         if type(self.device) is VeSyncSuperior6000S:

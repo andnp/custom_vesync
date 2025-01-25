@@ -154,7 +154,7 @@ class VeSyncBaseEntity(CoordinatorEntity, Entity):
         """Return the name of the entity (may be overridden)."""
         return self.base_name
 
-    @cached_property
+    @property
     def available(self) -> bool:
         """Return True if device is available."""
         return self.device.connection_status == "online"
@@ -184,7 +184,7 @@ class VeSyncDevice(VeSyncBaseEntity, ToggleEntity):
         """Initialize the VeSync device."""
         super().__init__(device, coordinator)
 
-    @cached_property
+    @property
     def is_on(self):
         """Return True if device is on."""
         return self.device.device_status == "on"

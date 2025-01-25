@@ -93,7 +93,7 @@ class VeSyncBaseLight(VeSyncDevice, LightEntity):
         """Initialize the VeSync light device."""
         super().__init__(light, coordinator)
 
-    @cached_property
+    @property
     def brightness(self):
         """Get light brightness."""
         # get value from pyvesync library api,
@@ -145,7 +145,7 @@ class VeSyncDimmableLightHA(VeSyncBaseLight, LightEntity):
         """Initialize the VeSync dimmable light device."""
         super().__init__(device, coordinator)
 
-    @cached_property
+    @property
     def color_mode(self):
         """Set color mode for this entity."""
         return COLOR_MODE_BRIGHTNESS
@@ -163,7 +163,7 @@ class VeSyncTunableWhiteLightHA(VeSyncBaseLight, LightEntity):
         """Initialize the VeSync Tunable White Light device."""
         super().__init__(device, coordinator)
 
-    @cached_property
+    @property
     def color_temp(self):
         """Get device white temperature."""
         # get value from pyvesync library api,
@@ -232,7 +232,7 @@ class VeSyncNightLightHA(VeSyncDimmableLightHA):
         """Return the name of the device."""
         return f"{super().name} night light"
 
-    @cached_property
+    @property
     def brightness(self):
         """Get night light brightness."""
         return (
@@ -241,7 +241,7 @@ class VeSyncNightLightHA(VeSyncDimmableLightHA):
             else {"on": 255, "dim": 125, "off": 0}[self.device.details["night_light"]]
         )
 
-    @cached_property
+    @property
     def is_on(self):
         """Return True if night light is on."""
         if has_feature(self.device, "details", "night_light"):

@@ -94,7 +94,7 @@ class VeSyncFanHA(VeSyncDevice, FanEntity):
             else FanEntityFeature.TURN_ON | FanEntityFeature.TURN_OFF | FanEntityFeature.SET_SPEED
         )
 
-    @cached_property
+    @property
     def percentage(self):
         """Return the current speed."""
         if (
@@ -109,7 +109,7 @@ class VeSyncFanHA(VeSyncDevice, FanEntity):
         """Return the number of speeds the fan supports."""
         return int_states_in_range(self._speed_range)
 
-    @cached_property
+    @property
     def preset_mode(self):
         """Get the current preset mode."""
         return self.smartfan.mode
@@ -119,7 +119,7 @@ class VeSyncFanHA(VeSyncDevice, FanEntity):
         """Return the ID of this fan."""
         return self.smartfan.uuid
 
-    @cached_property
+    @property
     def extra_state_attributes(self):
         """Return the state attributes of the fan."""
         attr = {}

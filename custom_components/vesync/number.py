@@ -91,12 +91,12 @@ class VeSyncFanSpeedLevelHA(VeSyncNumberEntity):
         """Return the name of the device."""
         return f"{super().name} fan speed level"
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the fan speed level."""
         return self.device.speed
 
-    @cached_property
+    @property
     def extra_state_attributes(self):
         """Return the state attributes of the humidifier."""
         return {"fan speed levels": self.device._config_dict["levels"]}
@@ -126,12 +126,12 @@ class VeSyncHumidifierMistLevelHA(VeSyncNumberEntity):
         """Return the name of the device."""
         return f"{super().name} mist level"
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the mist level."""
         return self.device.details["mist_virtual_level"]
 
-    @cached_property
+    @property
     def extra_state_attributes(self):
         """Return the state attributes of the humidifier."""
         return {"mist levels": self.device._config_dict["mist_levels"]}
@@ -161,12 +161,12 @@ class VeSyncHumidifierWarmthLevelHA(VeSyncNumberEntity):
         """Return the name of the device."""
         return f"{super().name} warm mist"
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the warmth level."""
         return self.device.details["warm_mist_level"]
 
-    @cached_property
+    @property
     def extra_state_attributes(self):
         """Return the state attributes of the humidifier."""
         return {"warm mist levels": self.device._config_dict["warm_mist_levels"]}
@@ -196,7 +196,7 @@ class VeSyncHumidifierTargetLevelHA(VeSyncNumberEntity):
         """Return the name of the device."""
         return f"{super().name} target level"
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the current target humidity level."""
         return self.device.config["auto_target_humidity"]

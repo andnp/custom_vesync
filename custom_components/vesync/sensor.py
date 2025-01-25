@@ -126,12 +126,12 @@ class VeSyncairfryerSensor(VeSyncBaseEntity, SensorEntity):
         """Return the class."""
         return self.stype[4]
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the value."""
         return getattr(self.airfryer, self.stype[5], None)
 
-    @cached_property
+    @property
     def native_unit_of_measurement(self):
         """Return the unit of measurement."""
         # return self.airfryer.temp_unit
@@ -179,7 +179,7 @@ class VeSyncPowerSensor(VeSyncOutletSensorEntity):
         """Return the power device class."""
         return SensorDeviceClass.POWER
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the current power usage in W."""
         return self.smartplug.power
@@ -223,7 +223,7 @@ class VeSyncEnergySensor(VeSyncOutletSensorEntity):
         """Return the energy device class."""
         return SensorDeviceClass.ENERGY
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the today total energy usage in kWh."""
         return self.smartplug.energy_today
@@ -285,7 +285,7 @@ class VeSyncAirQualitySensor(VeSyncHumidifierSensorEntity):
         """Return sensor name."""
         return f"{super().name} air quality"
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the air quality index."""
         if has_feature(self.smarthumidifier, "details", "air_quality"):
@@ -328,7 +328,7 @@ class VeSyncAirQualityPercSensor(VeSyncHumidifierSensorEntity):
         """Return the % unit of measurement."""
         return PERCENTAGE
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the air quality percentage."""
         if has_feature(self.smarthumidifier, "details", "aq_percent"):
@@ -365,7 +365,7 @@ class VeSyncAirQualityValueSensor(VeSyncHumidifierSensorEntity):
         """Return sensor name."""
         return f"{super().name} air quality value"
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the air quality index."""
         if has_feature(self.smarthumidifier, "details", "air_quality_value"):
@@ -402,7 +402,7 @@ class VeSyncPM1Sensor(VeSyncHumidifierSensorEntity):
         """Return sensor name."""
         return f"{super().name} PM1"
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the PM1."""
         if has_feature(self.smarthumidifier, "details", "pm1"):
@@ -439,7 +439,7 @@ class VeSyncPM10Sensor(VeSyncHumidifierSensorEntity):
         """Return sensor name."""
         return f"{super().name} PM10"
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the PM10."""
         if has_feature(self.smarthumidifier, "details", "pm10"):
@@ -482,7 +482,7 @@ class VeSyncFilterLifeSensor(VeSyncHumidifierSensorEntity):
         """Return the filter life device class."""
         return None
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the filter life index."""
         return (
@@ -543,7 +543,7 @@ class VeSyncFanRotateAngleSensor(VeSyncHumidifierSensorEntity):
         """Return the fan rotate angle device class."""
         return None
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the fan rotate angle index."""
         return (
@@ -590,7 +590,7 @@ class VeSyncHumiditySensor(VeSyncHumidifierSensorEntity):
         """Return the humidity device class."""
         return SensorDeviceClass.HUMIDITY
 
-    @cached_property
+    @property
     def native_value(self):
         """Return the current humidity in percent."""
         return self.smarthumidifier.details["humidity"]

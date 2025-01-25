@@ -89,7 +89,7 @@ class VeSyncairfryerSensor(VeSyncBaseEntity, BinarySensorEntity):
         """Return sensor name."""
         return self.stype[1]
 
-    @cached_property
+    @property
     def is_on(self) -> bool:
         """Return a value indicating whether the Humidifier's water tank is lifted."""
         return getattr(self.airfryer, self.stype[0], False)
@@ -128,7 +128,7 @@ class VeSyncOutOfWaterSensor(VeSyncBinarySensorEntity):
         """Return sensor name."""
         return f"{super().name} out of water"
 
-    @cached_property
+    @property
     def is_on(self) -> bool:
         """Return a value indicating whether the Humidifier is out of water."""
         return self.smarthumidifier.details["water_lacks"]
@@ -147,7 +147,7 @@ class VeSyncWaterTankLiftedSensor(VeSyncBinarySensorEntity):
         """Return sensor name."""
         return f"{super().name} water tank lifted"
 
-    @cached_property
+    @property
     def is_on(self) -> bool:
         """Return a value indicating whether the Humidifier's water tank is lifted."""
         return self.smarthumidifier.details["water_tank_lifted"]
@@ -166,7 +166,7 @@ class VeSyncFilterOpenStateSensor(VeSyncBinarySensorEntity):
         """Return sensor name."""
         return f"{super().name} filter open state"
 
-    @cached_property
+    @property
     def is_on(self) -> bool:
         """Return a value indicating whether the Humidifier's filter is open."""
         return self.smarthumidifier.details["filter_open_state"]

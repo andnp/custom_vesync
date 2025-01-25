@@ -138,21 +138,21 @@ class VeSyncHumidifierHA(VeSyncDevice, HumidifierEntity):
         """Flag supported features."""
         return HumidifierEntityFeature.MODES
 
-    @cached_property
+    @property
     def target_humidity(self) -> int:
         """Return the humidity we try to reach."""
         if type(self.smarthumidifier) is VeSyncSuperior6000S:
             return self.smarthumidifier.details["target_humidity"]
         return self.smarthumidifier.config["auto_target_humidity"]
 
-    @cached_property
+    @property
     def mode(self) -> str | None:
         """Get the current preset mode."""
         if type(self.smarthumidifier) is VeSyncSuperior6000S:
             return _get_ha_mode(self.smarthumidifier.mode)
         return _get_ha_mode(self.smarthumidifier.details["mode"])
 
-    @cached_property
+    @property
     def is_on(self) -> bool:
         """Return True if humidifier is on."""
         if type(self.smarthumidifier) is VeSyncSuperior6000S:
@@ -164,7 +164,7 @@ class VeSyncHumidifierHA(VeSyncDevice, HumidifierEntity):
         """Return the ID of this humidifier."""
         return self.smarthumidifier.uuid
 
-    @cached_property
+    @property
     def extra_state_attributes(self) -> Mapping[str, Any]:
         """Return the state attributes of the humidifier."""
 
